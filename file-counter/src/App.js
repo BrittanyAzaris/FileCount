@@ -7,9 +7,6 @@ function App() {
     <div className='App'>
       <h1>Folders go here</h1>
       <FileList className='fileList'/>
-      <hr/>
-      <h3>Total Files: </h3>
-      <h3>Total Filesize: </h3>
     </div>
   );
 }
