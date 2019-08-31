@@ -8,6 +8,9 @@
   margin-left: 10px;
 }
 
+.closedIcons{
+  margin-left: -40px;
+}
 .file {
   display: inline-block;
   margin-left: 10px;
@@ -15,4 +18,12 @@
 
 .indent{
   margin-left: 20px;
+}
+
+.visible{
+  visibility: visible;
+}
+
+.hidden{
+  visibility: hidden;
 }
