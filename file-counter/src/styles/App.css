@@ -1,0 +1,14 @@
+.App {
+  text-align: left;
+  margin-left: 50px;
+}
+
+.folder {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.file {
+  display: inline-block;
+  margin-left: 10px;
+}
