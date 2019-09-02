@@ -31,21 +31,30 @@ export default class FileList extends React.Component {
     console.log("item id: " + id)
     // toggle icon
     //if open folder clicked
+
     if (document.getElementById(id+'open').getAttribute('class') === 'visible icons') {
       document.getElementById(id+'open').setAttribute('class', 'hidden icons')
       document.getElementById(id+'closed').setAttribute('class', 'visible icons')
-    } else {
-      document.getElementById(id+'open').setAttribute('class', 'visible icons')
-      document.getElementById(id+'closed').setAttribute('class', 'hidden icons')
-    }
-    if( item.type === 'folder' ){
-      //display/hide children
+
+      // handle children
+
       item.children.map(child => {
         const childId = id + '/' +child.name
         console.log('childid: ' + childId)
         document.getElementById(childId).setAttribute('class', 'red')
       })
+    } else {
+      document.getElementById(id+'open').setAttribute('class', 'visible icons')
+      document.getElementById(id+'closed').setAttribute('class', 'hidden icons')
+      item.children.map(child => {
+        const childId = id + '/' +child.name
+        console.log('childid: ' + childId)
+        document.getElementById(childId).setAttribute('class', 'blue')
+      })
     }
+      //display/hide children
+
+
 
   }
 
@@ -57,7 +66,7 @@ export default class FileList extends React.Component {
       })
 
       return (
-        <div id={parent + '/' + item.name} className='visible' onClick={
+        <div key={id} id={id} className='visible' onClick={
             (e) => {
               // Prevent parents also being called
               e.cancelBubble = true;
@@ -82,7 +91,7 @@ export default class FileList extends React.Component {
       )
     } else {
       return (
-        <div id={parent + '/' + item.name} className='visible'>
+        <div key={parent + '/' + item.name} id={parent + '/' + item.name} className='visible'>
           <FaFile />
           <li className='fileTitle'>{item.name + ' ' + item.size + 'MB'}</li>
         </div>
