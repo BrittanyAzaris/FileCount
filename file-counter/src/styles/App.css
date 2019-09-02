@@ -8,9 +8,21 @@
   margin-left: 10px;
 }
 
-.closedIcons{
-  margin-left: -40px;
+
+.icons{
+  display: inline-block;
 }
+
+.folderTitle{
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.fileTitle{
+  display: inline-block;
+  margin-left: 5px;
+}
+
 .file {
   display: inline-block;
   margin-left: 10px;
@@ -26,4 +38,14 @@
 
 .hidden{
   visibility: hidden;
+  height: 0;
+  width: 0;
+}
+
+.red {
+  color: red;
+}
+
+.blue {
+  color: blue;
 }
