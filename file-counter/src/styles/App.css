@@ -1,17 +1,19 @@
 body{
-  background-color: #F2EBE6;
-  color: #00B0CC;
+  background-color: #FFFDFC;
+  color: #00A5BF;
 }
 
 hr {
   width: 100%;
-  color: #00B0CC;
+  border: 0.5px solid #00A5BF;
+  margin-left: -50px;
 }
 
 .App {
   text-align: left;
   margin-top: 50px;
   margin-left: 50px;
+  margin-right: 0px;
 }
 
 .icons{
