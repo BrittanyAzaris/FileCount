@@ -1,5 +1,4 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 // import {MDBIcon} from 'mdbreact';
 import {FaFile, FaFolder, FaFolderOpen, FaAngleRight, FaAngleDown} from 'react-icons/fa'
 
@@ -17,7 +16,6 @@ export default class FileList extends React.Component {
   }
 
   componentDidMount(){
-    console.log("component did mount: " + this.state.data)
     fetch('https://chal-locdrmwqia.now.sh/')
     .then(response => response.json())
     .then((jsonData) => {
@@ -25,9 +23,12 @@ export default class FileList extends React.Component {
     })
     .catch(console.log)
   }
+
+  // Update the count for files and filesize
   countFiles(dataArray){
     dataArray.map(item => {
       if(item.type === 'file'){
+        // Update the count for total Files and Filesize
         this.setState(prevState => {
            return {
              totalFiles: prevState.totalFiles + 1,
@@ -36,31 +37,37 @@ export default class FileList extends React.Component {
         })
 
       } else {
+        // Count files and filesize within the folder
         this.countFiles(item.children)
       }
     })
 
   }
 
+  // Recursively hide all child items in a folder
   hideChildren(item, itemId){
     document.getElementById(itemId).setAttribute('class', 'hidden')
     if(item.type==='folder'){
-      // hide icon
+      // Hide the folder icons
       document.getElementById(itemId+'open').setAttribute('class', 'hidden icons')
       document.getElementById(itemId+'closed').setAttribute('class', 'hidden icons')
-        item.children.map(child => {
+      // Recursively hide any items of children
+      item.children.map(child => {
         const childId = itemId + '/' + child.name
         this.hideChildren(child, childId)
       })
     }
   }
 
+  // Recursively show all the child items in a folder
   showChildren(item, itemId){
     document.getElementById(itemId).setAttribute('class', 'visible')
     if(item.type==='folder'){
-      // set open icon
+      // Set open icon
       document.getElementById(itemId+'open').setAttribute('class', 'visible icons')
       document.getElementById(itemId+'closed').setAttribute('class', 'hidden icons')
+
+      // Recursively show all child items in a folder
       item.children.map(child => {
         const childId = itemId + '/' + child.name
         this.showChildren(child, childId)
@@ -68,57 +75,59 @@ export default class FileList extends React.Component {
     }
   }
 
+  // Handle switching of icons and visibility when a folder is clicked
   toggleFolder(item, id) {
-    // toggle icon
-    //if open folder clicked
-
+    // When an open folder is clicked,
+    // hide open folder icons and show closed folder icons
     if (document.getElementById(id+'open').getAttribute('class') === 'visible icons') {
       document.getElementById(id+'open').setAttribute('class', 'hidden icons')
       document.getElementById(id+'closed').setAttribute('class', 'visible icons')
 
-      // hide children
-
+      // Also hide children of that folder
       item.children.map(child => {
         const childId = id + '/' +child.name
         this.hideChildren(child, childId)
-
-        // document.getElementById(childId).setAttribute('class', 'red')
       })
     } else {
+      // When an closed folder is clicked,
+      // hide closed folder icons and show open folder icons
       document.getElementById(id+'open').setAttribute('class', 'visible icons')
       document.getElementById(id+'closed').setAttribute('class', 'hidden icons')
 
-      //show children
+      // Also show children of that folder
       item.children.map(child => {
         const childId = id + '/' +child.name
         this.showChildren(child, childId)
-
-        // document.getElementById(childId).setAttribute('class', 'red')
       })
-
     }
-
-
-
   }
 
+  // Takes two arguments:
+  // item (each json data object) and
+  // parent (the breadcrumb of objects names that came before it)
+
   displayItem(item, parent) {
+
     if( item.type === "folder" ) {
       const id = parent + '/' + item.name;
+      // Recursively display children of folders
       const item_children = item.children.map( child => {
         return this.displayItem(child, id)
       })
 
       return (
-        <div key={id} id={id} className='visible' onClick={
-            (e) => {
-              // Prevent parents also being called
-              e.cancelBubble = true;
-              e.stopPropagation();
+        <div key={id}
+             id={id}
+             className='visible'
+             onClick={
+               (e) => {
+                 // Prevent parents also being called
+                 e.cancelBubble = true;
+                 e.stopPropagation();
 
-              this.toggleFolder(item, id);
-            }
-          }>
+                 this.toggleFolder(item, id);
+               }
+        }>
           <div className='visible icons' id={id+'open'}>
             <FaAngleDown />
             <FaFolderOpen />
@@ -134,6 +143,7 @@ export default class FileList extends React.Component {
         </div>
       )
     } else {
+      // Display files with file icon, name, and size in MB
       return (
         <div key={parent + '/' + item.name} id={parent + '/' + item.name} className='visible'>
           <FaFile />
@@ -143,17 +153,19 @@ export default class FileList extends React.Component {
     }
   }
 
+  // Map over each object from the Json Data to display
   displayFoldersNav() {
     if( this.state.isLoaded ) {
       return this.state.data.map( item => {
+        // Set top level parent as "top"
         return this.displayItem(item, "top");
       })
     }
   }
 
   render() {
-    console.log("render: " + this.state.data)
-
+    // Wait for data to be loaded
+    if(!this.state.data) return null
       return (
         <div>
           {this.displayFoldersNav()}
