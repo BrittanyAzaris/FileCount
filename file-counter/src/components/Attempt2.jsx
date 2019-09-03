@@ -10,18 +10,35 @@ export default class FileList extends React.Component {
     super();
     this.state = {
       data: [],
-      isLoaded: false
+      isLoaded: false,
+      totalFiles: 0,
+      totalFileSize: 0
     };
   }
 
   componentDidMount(){
+    console.log("component did mount: " + this.state.data)
     fetch('https://chal-locdrmwqia.now.sh/')
     .then(response => response.json())
     .then((jsonData) => {
-      this.setState({ data: jsonData.data, isLoaded: true})
+      this.setState({ data: jsonData.data, isLoaded: true}, () => this.countFiles(this.state.data))
     })
     .catch(console.log)
-    // call method here not in render
+  }
+  countFiles(dataArray){
+    dataArray.map(item => {
+      if(item.type === 'file'){
+        this.setState(prevState => {
+           return {
+             totalFiles: prevState.totalFiles + 1,
+             totalFileSize: prevState.totalFileSize + item.size
+           }
+        })
+
+      } else {
+        this.countFiles(item.children)
+      }
+    })
 
   }
 
@@ -52,9 +69,6 @@ export default class FileList extends React.Component {
   }
 
   toggleFolder(item, id) {
-    console.log(item)
-
-    console.log("item id: " + id)
     // toggle icon
     //if open folder clicked
 
@@ -138,7 +152,7 @@ export default class FileList extends React.Component {
   }
 
   render() {
-    // console.log(Object.values(this.state.data)[0])
+    console.log("render: " + this.state.data)
 
       return (
         <div>
