@@ -40,6 +40,7 @@ export default class FileList extends React.Component {
         // Count files and filesize within the folder
         this.countFiles(item.children)
       }
+      return null
     })
 
   }
@@ -55,6 +56,7 @@ export default class FileList extends React.Component {
       item.children.map(child => {
         const childId = itemId + '/' + child.name
         this.hideChildren(child, childId)
+        return null
       })
     }
   }
@@ -71,6 +73,7 @@ export default class FileList extends React.Component {
       item.children.map(child => {
         const childId = itemId + '/' + child.name
         this.showChildren(child, childId)
+        return null
       })
     }
   }
@@ -87,6 +90,7 @@ export default class FileList extends React.Component {
       item.children.map(child => {
         const childId = id + '/' +child.name
         this.hideChildren(child, childId)
+        return null
       })
     } else {
       // When an closed folder is clicked,
@@ -98,6 +102,7 @@ export default class FileList extends React.Component {
       item.children.map(child => {
         const childId = id + '/' +child.name
         this.showChildren(child, childId)
+        return null
       })
     }
   }
