@@ -25,6 +25,26 @@ export default class FileList extends React.Component {
 
   }
 
+  hideChildren(item, itemId){
+    document.getElementById(itemId).setAttribute('class', 'red')
+    if(item.type==='folder'){
+        item.children.map(child => {
+        const childId = itemId + '/' + child.name
+        this.hideChildren(child, childId)
+      })
+    }
+  }
+
+  showChildren(item, itemId){
+    document.getElementById(itemId).setAttribute('class', 'blue')
+    if(item.type==='folder'){
+      item.children.map(child => {
+        const childId = itemId + '/' + child.name
+        this.hideChildren(child, childId)
+      })
+    }
+  }
+
   toggleFolder(item, id) {
     console.log(item)
 
@@ -36,23 +56,27 @@ export default class FileList extends React.Component {
       document.getElementById(id+'open').setAttribute('class', 'hidden icons')
       document.getElementById(id+'closed').setAttribute('class', 'visible icons')
 
-      // handle children
+      // hide children
 
       item.children.map(child => {
         const childId = id + '/' +child.name
-        console.log('childid: ' + childId)
-        document.getElementById(childId).setAttribute('class', 'red')
+        this.hideChildren(child, childId)
+
+        // document.getElementById(childId).setAttribute('class', 'red')
       })
     } else {
       document.getElementById(id+'open').setAttribute('class', 'visible icons')
       document.getElementById(id+'closed').setAttribute('class', 'hidden icons')
+
+      //show children
       item.children.map(child => {
         const childId = id + '/' +child.name
-        console.log('childid: ' + childId)
-        document.getElementById(childId).setAttribute('class', 'blue')
+        this.showChildren(child, childId)
+
+        // document.getElementById(childId).setAttribute('class', 'red')
       })
+
     }
-      //display/hide children
 
 
 
