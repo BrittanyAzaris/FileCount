@@ -1,16 +1,31 @@
+body{
+  background-color: #F2EBE6;
+  color: #00B0CC;
+}
+
+hr {
+  width: 100%;
+  color: #00B0CC;
+}
+
 .App {
   text-align: left;
+  margin-top: 50px;
   margin-left: 50px;
 }
 
-.folder {
-  display: inline-block;
-  margin-left: 10px;
-}
-
-
 .icons{
   display: inline-block;
+  margin-top: -20px;
+}
+
+.fileIcon {
+  margin: 10px 0px 10px 20px;
+}
+
+.arrowIcon{
+  margin-right: 5px;
+  margin-left: 20px;
 }
 
 .folderTitle{
@@ -23,13 +38,8 @@
   margin-left: 5px;
 }
 
-.file {
-  display: inline-block;
-  margin-left: 10px;
-}
-
 .indent{
-  margin-left: 20px;
+  margin-left: 50px;
 }
 
 .visible{
@@ -40,12 +50,4 @@
   visibility: hidden;
   height: 0;
   width: 0;
-}
-
-.red {
-  color: red;
-}
-
-.blue {
-  color: blue;
 }

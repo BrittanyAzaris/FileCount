@@ -1,7 +1,5 @@
 import React from 'react';
-// import {MDBIcon} from 'mdbreact';
-import {FaFile, FaFolder, FaFolderOpen, FaAngleRight, FaAngleDown} from 'react-icons/fa'
-
+import {MDBIcon} from 'mdbreact';
 
 export default class FileList extends React.Component {
 
@@ -26,22 +24,23 @@ export default class FileList extends React.Component {
 
   // Update the count for files and filesize
   countFiles(dataArray){
-    dataArray.map(item => {
-      if(item.type === 'file'){
-        // Update the count for total Files and Filesize
-        this.setState(prevState => {
-           return {
-             totalFiles: prevState.totalFiles + 1,
-             totalFileSize: prevState.totalFileSize + item.size
-           }
-        })
+    if (this.state.data) {
+      dataArray.map(item => {
+        if(item.type === 'file'){
+          // Update the count for total Files and Filesize
+          this.setState(prevState => {
+             return {
+               totalFiles: prevState.totalFiles + 1,
+               totalFileSize: prevState.totalFileSize + item.size
+             }
+          })
 
-      } else {
-        // Count files and filesize within the folder
-        this.countFiles(item.children)
-      }
-      return null
-    })
+        } else {
+          // Count files and filesize within the folder
+          this.countFiles(item.children)
+        }
+        return null
+      })}
 
   }
 
@@ -134,12 +133,12 @@ export default class FileList extends React.Component {
                }
         }>
           <div className='visible icons' id={id+'open'}>
-            <FaAngleDown />
-            <FaFolderOpen />
+            <MDBIcon icon="angle-down" className='arrowIcon' size='lg'/>
+            <MDBIcon far icon="folder-open" size='lg'/>
           </div>
           <div className='hidden icons' id={id+'closed'}>
-            <FaAngleRight />
-            <FaFolder />
+            <MDBIcon icon="angle-right" className='arrowIcon' size='lg'/>
+            <MDBIcon far icon="folder" size='lg'/>
           </div>
           <li className='folderTitle'>{item.name}</li>
           <div className='indent'>
@@ -151,8 +150,8 @@ export default class FileList extends React.Component {
       // Display files with file icon, name, and size in MB
       return (
         <div key={parent + '/' + item.name} id={parent + '/' + item.name} className='visible'>
-          <FaFile />
-          <li className='fileTitle'>{item.name + ' ' + item.size + 'MB'}</li>
+          <MDBIcon far icon="file-alt" className='fileIcon' size='lg'/>
+          <li className='fileTitle'>{item.name + ' ' + item.size + ' MB'}</li>
         </div>
       )
     }
