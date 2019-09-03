@@ -40,7 +40,7 @@ export default class FileList extends React.Component {
     if(item.type==='folder'){
       item.children.map(child => {
         const childId = itemId + '/' + child.name
-        this.hideChildren(child, childId)
+        this.showChildren(child, childId)
       })
     }
   }
