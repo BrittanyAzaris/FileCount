@@ -26,8 +26,11 @@ export default class FileList extends React.Component {
   }
 
   hideChildren(item, itemId){
-    document.getElementById(itemId).setAttribute('class', 'red')
+    document.getElementById(itemId).setAttribute('class', 'hidden')
     if(item.type==='folder'){
+      // hide icon
+      document.getElementById(itemId+'open').setAttribute('class', 'hidden icons')
+      document.getElementById(itemId+'closed').setAttribute('class', 'hidden icons')
         item.children.map(child => {
         const childId = itemId + '/' + child.name
         this.hideChildren(child, childId)
@@ -36,8 +39,11 @@ export default class FileList extends React.Component {
   }
 
   showChildren(item, itemId){
-    document.getElementById(itemId).setAttribute('class', 'blue')
+    document.getElementById(itemId).setAttribute('class', 'visible')
     if(item.type==='folder'){
+      // set open icon
+      document.getElementById(itemId+'open').setAttribute('class', 'visible icons')
+      document.getElementById(itemId+'closed').setAttribute('class', 'hidden icons')
       item.children.map(child => {
         const childId = itemId + '/' + child.name
         this.showChildren(child, childId)
