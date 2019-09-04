@@ -184,7 +184,9 @@ export default class FileList extends React.Component {
 
     if (isLoaded){
       display = <div>
-        {this.displayFoldersNav()}
+        <div className='folderNavDiv'>
+          {this.displayFoldersNav()}
+        </div>
         <hr/>
         <h3>Total Files: {this.state.totalFiles}</h3>
         <h3>Total Filesize: {this.state.totalFileSize} MB</h3>

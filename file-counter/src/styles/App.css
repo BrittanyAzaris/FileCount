@@ -6,13 +6,21 @@ body{
 hr {
   width: 100%;
   border: 0.5px solid #00A5BF;
-  margin-left: -50px;
+  margin-right: auto 0;
+}
+
+h3{
+  margin-left: 100px;
+}
+
+.folderNavDiv{
+  margin-left: 80px;
 }
 
 .App {
   text-align: left;
   margin-top: 50px;
-  margin-left: 50px;
+  margin-left: 0px;
   margin-right: 0px;
 }
 
