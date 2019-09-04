@@ -53,3 +53,8 @@ hr {
   height: 0;
   width: 0;
 }
+
+.loading{
+  display: inline-block;
+  margin-right:10px;
+}

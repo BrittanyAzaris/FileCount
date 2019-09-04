@@ -1,5 +1,13 @@
 import React from 'react';
 import {MDBIcon} from 'mdbreact';
+import {css} from '@emotion/core';
+import PulseLoader from 'react-spinners/PulseLoader';
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 export default class FileList extends React.Component {
 
@@ -169,13 +177,35 @@ export default class FileList extends React.Component {
 
   render() {
     // Wait for data to be loaded
-    if(!this.state.data) return null
+    const isLoaded = this.state.isLoaded;
+    let display;
+
+    if (isLoaded){
+      display = <div>
+        {this.displayFoldersNav()}
+        <hr/>
+        <h3>Total Files: {this.state.totalFiles}</h3>
+        <h3>Total Filesize: {this.state.totalFileSize} MB</h3>
+      </div>
+
+    } else {
+      display = <div>
+        <h1 className='loading'>Loading</h1>
+        <div className='sweet-loading loading'>
+          <PulseLoader
+            css={override}
+            sizeUnit={"px"}
+            size={10}
+            color={'#00A5BF'}
+            loading={this.state.loading}
+          />
+        </div>
+      </div>
+
+    }
       return (
         <div>
-          {this.displayFoldersNav()}
-          <hr/>
-          <h3>Total Files: {this.state.totalFiles}</h3>
-          <h3>Total Filesize: {this.state.totalFileSize} MB</h3>
+          {display}
         </div>
       );
   }
