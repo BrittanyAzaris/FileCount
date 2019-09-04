@@ -3,6 +3,8 @@ import {MDBIcon} from 'mdbreact';
 import {css} from '@emotion/core';
 import PulseLoader from 'react-spinners/PulseLoader';
 
+
+// Used for the pule loading icon
 const override = css`
   display: block;
   margin: 0 auto;

@@ -19,6 +19,7 @@ hr {
 .icons{
   display: inline-block;
   margin-top: -20px;
+  cursor: pointer;
 }
 
 .fileIcon {
