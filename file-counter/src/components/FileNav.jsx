@@ -20,13 +20,22 @@ export default class FileList extends React.Component {
       formattedData: [],
       isLoaded: false,
       totalFiles: 0,
-      totalFileSize: 0
+      totalFileSize: 0,
+      error: ''
     };
   }
 
   componentDidMount(){
     fetch('https://chal-locdrmwqia.now.sh/')
-    .then(response => response.json())
+    .then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        // Set error message to display to user
+        let errorMessage = 'Request rejected with status: ' + response.status
+        this.setState({error: errorMessage })
+        throw Error(`Request rejected with status ${response.status}`)
+      }})
     .then((jsonData) => {
 
       // Add unique keys to JSON
@@ -36,7 +45,7 @@ export default class FileList extends React.Component {
       this.setState({ data: formattedData, isLoaded: true}, () => this.countFiles(this.state.data))
 
     })
-    .catch(console.log)
+    .catch(console.error)
   }
 
   formatData(objectArray, index){
@@ -231,6 +240,14 @@ export default class FileList extends React.Component {
           />
         </div>
       </div>
+      if (this.state.error !== ''){
+        display =
+        <div className = 'errorContainer'>
+          {this.state.error}
+          <p>Please refresh the page</p>
+        </div>
+
+      }
 
     }
       return (
