@@ -2,9 +2,9 @@ import React from 'react';
 import {MDBIcon} from 'mdbreact';
 import {css} from '@emotion/core';
 import PulseLoader from 'react-spinners/PulseLoader';
+var fetch = require('fetch-retry');
 
-
-// Used for the pule loading icon
+// Used for the pulse loading icon
 const override = css`
   display: block;
   margin: 0 auto;
@@ -26,16 +26,10 @@ export default class FileList extends React.Component {
   }
 
   componentDidMount(){
-    fetch('https://chal-locdrmwqia.now.sh/')
-    .then(response => {
-      if(response.ok){
-        return response.json()
-      } else {
-        // Set error message to display to user
-        let errorMessage = 'Request rejected with status: ' + response.status
-        this.setState({error: errorMessage })
-        throw Error(`Request rejected with status ${response.status}`)
-      }})
+    fetch('https://chal-locdrmwqia.now.sh/',  {
+      retryOn: [500] // Try to fetch again if there was a server error
+    })
+    .then(response => response.json())
     .then((jsonData) => {
 
       // Add unique keys to JSON
@@ -240,14 +234,7 @@ export default class FileList extends React.Component {
           />
         </div>
       </div>
-      if (this.state.error !== ''){
-        display =
-        <div className = 'errorContainer'>
-          {this.state.error}
-          <p>Please refresh the page</p>
-        </div>
 
-      }
 
     }
       return (
