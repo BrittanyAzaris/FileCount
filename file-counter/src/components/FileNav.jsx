@@ -17,6 +17,7 @@ export default class FileList extends React.Component {
     super();
     this.state = {
       data: [],
+      formattedData: [],
       isLoaded: false,
       totalFiles: 0,
       totalFileSize: 0
@@ -27,10 +28,34 @@ export default class FileList extends React.Component {
     fetch('https://chal-locdrmwqia.now.sh/')
     .then(response => response.json())
     .then((jsonData) => {
-      this.setState({ data: jsonData.data, isLoaded: true}, () => this.countFiles(this.state.data))
+
+      // Add unique keys to JSON
+      let index = 0;
+      let formattedData = this.formatData(jsonData.data, index);
+
+      this.setState({ data: formattedData, isLoaded: true}, () => this.countFiles(this.state.data))
+
     })
     .catch(console.log)
   }
+
+  formatData(objectArray, index){
+
+    let formattedDataArray = [];
+    objectArray.map(obj => {
+      // Create a unique idea key and value to add to each json object
+      obj.uniqueId =  obj.name + index;
+      formattedDataArray.push(obj)
+      index = index + 1;
+      // Recursively add new key value pairs to children of folders
+      if(obj.type ==='folder'){
+          this.formatData(obj.children, index)
+      }
+      return null
+    })
+    return formattedDataArray
+  }
+
 
   // Update the count for files and filesize
   countFiles(dataArray){
@@ -63,7 +88,7 @@ export default class FileList extends React.Component {
       document.getElementById(itemId+'closed').setAttribute('class', 'hidden icons')
       // Recursively hide any items of children
       item.children.map(child => {
-        const childId = itemId + '/' + child.name
+        const childId = child.uniqueId
         this.hideChildren(child, childId)
         return null
       })
@@ -80,7 +105,7 @@ export default class FileList extends React.Component {
 
       // Recursively show all child items in a folder
       item.children.map(child => {
-        const childId = itemId + '/' + child.name
+        const childId = child.uniqueId
         this.showChildren(child, childId)
         return null
       })
@@ -97,7 +122,7 @@ export default class FileList extends React.Component {
 
       // Also hide children of that folder
       item.children.map(child => {
-        const childId = id + '/' +child.name
+        const childId = child.uniqueId
         this.hideChildren(child, childId)
         return null
       })
@@ -109,7 +134,7 @@ export default class FileList extends React.Component {
 
       // Also show children of that folder
       item.children.map(child => {
-        const childId = id + '/' +child.name
+        const childId = child.uniqueId
         this.showChildren(child, childId)
         return null
       })
@@ -123,7 +148,8 @@ export default class FileList extends React.Component {
   displayItem(item, parent) {
 
     if( item.type === "folder" ) {
-      const id = parent + '/' + item.name;
+      // const id = parent + '/' + item.name;
+      const id = item.uniqueId
       // Recursively display children of folders
       const item_children = item.children.map( child => {
         return this.displayItem(child, id)
@@ -141,7 +167,7 @@ export default class FileList extends React.Component {
 
                  this.toggleFolder(item, id);
                }
-        }>
+             }>
           <div className='visible icons' id={id+'open'}>
             <MDBIcon icon="angle-down" className='arrowIcon' size='lg'/>
             <MDBIcon far icon="folder-open" size='lg'/>
@@ -159,7 +185,7 @@ export default class FileList extends React.Component {
     } else {
       // Display files with file icon, name, and size in MB
       return (
-        <div key={parent + '/' + item.name} id={parent + '/' + item.name} className='visible'>
+        <div key={item.uniqueId} id={item.uniqueId} className='visible'>
           <MDBIcon far icon="file-alt" className='fileIcon' size='lg'/>
           <li className='fileTitle'>{item.name + ' ' + item.size + ' MB'}</li>
         </div>
@@ -193,7 +219,7 @@ export default class FileList extends React.Component {
       </div>
 
     } else {
-      display = <div>
+      display = <div className='loadingContainer'>
         <h1 className='loading'>Loading</h1>
         <div className='sweet-loading loading'>
           <PulseLoader
