@@ -144,14 +144,10 @@ export default class FileList extends React.Component {
     }
   }
 
-  // Takes two arguments:
-  // item (each json data object) and
-  // parent (the breadcrumb of objects names that came before it)
-
-  displayItem(item, parent) {
+  // Takes an object to display
+  displayItem(item) {
 
     if( item.type === "folder" ) {
-      // const id = parent + '/' + item.name;
       const id = item.uniqueId
       // Recursively display children of folders
       const item_children = item.children.map( child => {
@@ -200,8 +196,7 @@ export default class FileList extends React.Component {
   displayFoldersNav() {
     if( this.state.isLoaded ) {
       return this.state.data.map( item => {
-        // Set top level parent as "top"
-        return this.displayItem(item, "top");
+        return this.displayItem(item);
       })
     }
   }
